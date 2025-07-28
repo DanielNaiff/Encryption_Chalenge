@@ -13,7 +13,8 @@ public class AESConverter implements AttributeConverter<String, String> {
 
     private static final byte[] KEY = "1234567890123456".getBytes();
 
-//    private static final byte[] KEY = System.getenv("APP_KEY").getBytes();
+    //Para mais segurança
+    //private static final byte[] KEY = System.getenv("APP_KEY").getBytes();
 
     private final SecretKeySpec secretKeySpec;
 
