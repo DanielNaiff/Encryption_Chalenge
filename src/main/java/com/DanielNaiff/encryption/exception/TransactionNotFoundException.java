@@ -1,4 +1,4 @@
-package com.DanielNaiff.encryption.Exception;
+package com.DanielNaiff.encryption.exception;
 
 public class TransactionNotFoundException extends RuntimeException {
     public TransactionNotFoundException(Long id) {

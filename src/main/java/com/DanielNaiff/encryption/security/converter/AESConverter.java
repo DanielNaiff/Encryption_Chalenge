@@ -1,4 +1,4 @@
-package com.DanielNaiff.encryption.converter;
+package com.DanielNaiff.encryption.security.converter;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
@@ -11,10 +11,7 @@ public class AESConverter implements AttributeConverter<String, String> {
 
     private static final String ALGORITHM = "AES";
 
-    private static final byte[] KEY = "1234567890123456".getBytes();
-
-    //Para mais segurança
-    //private static final byte[] KEY = System.getenv("APP_KEY").getBytes();
+    private static final byte[] KEY = System.getenv("APP_KEY").getBytes();
 
     private final SecretKeySpec secretKeySpec;
 

@@ -1,6 +1,6 @@
-package com.DanielNaiff.encryption.entity;
+package com.DanielNaiff.encryption.model;
 
-import com.DanielNaiff.encryption.converter.AESConverter;
+import com.DanielNaiff.encryption.security.converter.AESConverter;
 import jakarta.persistence.*;
 import lombok.*;
 

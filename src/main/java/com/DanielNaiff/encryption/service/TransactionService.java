@@ -1,16 +1,14 @@
 package com.DanielNaiff.encryption.service;
 
 
-import com.DanielNaiff.encryption.Exception.MissingFieldException;
-import com.DanielNaiff.encryption.Exception.TransactionNotFoundException;
-import com.DanielNaiff.encryption.entity.TransactionEntity;
-import com.DanielNaiff.encryption.entity.dto.TransactionRequestDTO;
-import com.DanielNaiff.encryption.entity.dto.TransactionResponseDTO;
-import com.DanielNaiff.encryption.entity.dto.TransactionUpdateRequestDTO;
+import com.DanielNaiff.encryption.exception.MissingFieldException;
+import com.DanielNaiff.encryption.exception.TransactionNotFoundException;
+import com.DanielNaiff.encryption.model.TransactionEntity;
+import com.DanielNaiff.encryption.model.dto.TransactionRequestDTO;
+import com.DanielNaiff.encryption.model.dto.TransactionResponseDTO;
+import com.DanielNaiff.encryption.model.dto.TransactionUpdateRequestDTO;
 import com.DanielNaiff.encryption.repository.TransactionRepository;
-import jakarta.transaction.Transaction;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;

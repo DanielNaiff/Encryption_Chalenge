@@ -1,6 +1,6 @@
-package com.DanielNaiff.encryption.entity.dto;
+package com.DanielNaiff.encryption.model.dto;
 
-import com.DanielNaiff.encryption.entity.TransactionEntity;
+import com.DanielNaiff.encryption.model.TransactionEntity;
 
 public record TransactionResponseDTO(Long id, String useDocument, String creditCardToken, Long value) {
 

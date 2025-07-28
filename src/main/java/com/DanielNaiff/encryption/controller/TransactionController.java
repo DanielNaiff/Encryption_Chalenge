@@ -1,11 +1,10 @@
 package com.DanielNaiff.encryption.controller;
 
-import com.DanielNaiff.encryption.entity.dto.TransactionRequestDTO;
-import com.DanielNaiff.encryption.entity.dto.TransactionResponseDTO;
-import com.DanielNaiff.encryption.entity.dto.TransactionUpdateRequestDTO;
+import com.DanielNaiff.encryption.model.dto.TransactionRequestDTO;
+import com.DanielNaiff.encryption.model.dto.TransactionResponseDTO;
+import com.DanielNaiff.encryption.model.dto.TransactionUpdateRequestDTO;
 import com.DanielNaiff.encryption.service.TransactionService;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

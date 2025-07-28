@@ -1,6 +1,6 @@
 package com.DanielNaiff.encryption;
 
-import com.DanielNaiff.encryption.converter.AESConverter;
+import com.DanielNaiff.encryption.security.converter.AESConverter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

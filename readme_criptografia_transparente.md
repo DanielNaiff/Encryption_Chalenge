@@ -22,20 +22,29 @@ Implementar criptografia automática para os campos `userDocument` e `creditCard
 
 ##  Estrutura da Entidade
 
+- TransactionRequest — para receber os dados de entrada ao criar uma transação (CREATE);
+
+- TransactionResponse — para retornar dados ao cliente após operações, garantindo que apenas os campos necessários sejam expostos;
+
+- TransactionUpdateRequest — para atualizar dados da transação (UPDATE) sem expor diretamente a entidade.
+
 ```java
-@Entity
-public class Payment {
+public class TransactionEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Convert(converter = EncryptionConverter.class)
+    @Column(name="user_document", nullable = false, unique = true)
+    @Convert(converter = AESConverter.class)
     private String userDocument;
 
-    @Convert(converter = EncryptionConverter.class)
+    @Column(name = "credit_card_token", nullable = false)
+    @Convert(converter = AESConverter.class)
     private String creditCardToken;
 
-    private Long value;
+    @Column(name="user_value")
+    private Long transactionValue;
 }
 ```
 
@@ -47,32 +56,60 @@ public class Payment {
 
 - **Algoritmo:** AES (Advanced Encryption Standard)
 - **Tipo:** Simétrica
-- **Chave:** Armazenada de forma segura em um arquivo `.properties` ou variável de ambiente.
+- **Chave:** Armazenada de forma segura na variável de ambiente.
 
 ```java
-public class EncryptionConverter implements AttributeConverter<String, String> {
-    private static final String SECRET_KEY = "minha-chave-secreta123";
+@Converter
+public class AESConverter implements AttributeConverter<String, String> {
+
+    private static final String ALGORITHM = "AES";
+
+    private static final byte[] KEY = System.getenv("APP_KEY").getBytes();
+
+    private final SecretKeySpec secretKeySpec;
+
+    public AESConverter() {
+        this.secretKeySpec = new SecretKeySpec(KEY, ALGORITHM);
+    }
 
     @Override
     public String convertToDatabaseColumn(String attribute) {
-        return CryptoUtils.encrypt(attribute, SECRET_KEY);
+        if (attribute == null) return null;
+        try {
+            Cipher cipher = Cipher.getInstance(ALGORITHM);
+            cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
+            byte[] encrypted = cipher.doFinal(attribute.getBytes("UTF-8"));
+            return Base64.getEncoder().encodeToString(encrypted);
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao criptografar", e);
+        }
     }
 
     @Override
     public String convertToEntityAttribute(String dbData) {
-        return CryptoUtils.decrypt(dbData, SECRET_KEY);
+        if (dbData == null) return null;
+        try {
+            Cipher cipher = Cipher.getInstance(ALGORITHM);
+            cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
+            byte[] decoded = Base64.getDecoder().decode(dbData);
+            byte[] decrypted = cipher.doFinal(decoded);
+            return new String(decrypted, "UTF-8");
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao descriptografar", e);
+        }
     }
 }
+
 ```
 
 ---
 
-## 🔮 Funcionalidades
+##  Funcionalidades
 
 - CRUD completo com Spring Data JPA
 - Criptografia e descriptografia transparente
-- Banco de dados simulado (H2 ou PostgreSQL)
-- Documentação com Swagger (opcional)
+- Banco de dados simulado (PostgreSQL)
+- Docker
 
 ---
 
@@ -84,24 +121,15 @@ public class EncryptionConverter implements AttributeConverter<String, String> {
 
 ---
 
-## 🚀 Como Executar
 
-```bash
-git clone https://github.com/danielnaiff/secure-entity-crypto-api.git
-cd secure-entity-crypto-api
-./mvnw spring-boot:run
-```
-
----
 
 ## 📁 Tecnologias
 
-- Java 17+
+- Java 21
 - Spring Boot
 - Spring Data JPA
 - AES Encryption
 - Lombok
-- Swagger (se aplicável)
 
 ---
 
@@ -111,12 +139,14 @@ cd secure-entity-crypto-api
 src
 ├── main
 │   ├── java
-│   │   ├── com.example.cryptoapi
+│   │   ├── com.DanielNaiff.encryption
 │   │   │   ├── controller
 │   │   │   ├── model
+│   │   │   │   └──dto 
 │   │   │   ├── repository
 │   │   │   ├── service
-│   │   │   └── security (EncryptionConverter e CryptoUtils)
+│   │   │   └── security
+│   │   │       └──converter
 │   └── resources
 │       └── application.properties
 ```
@@ -132,5 +162,5 @@ src
 
 ## 🙋‍♂️ Autor
 
-Desenvolvido por [Daniel Naiff](https://github.com/danielnaiff)
+Desenvolvido por [Daniel Naiff](https://github.com/DanielNaiff)
 
